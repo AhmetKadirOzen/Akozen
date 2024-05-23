@@ -4,6 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    env_file:
+      - VizeOdeviAhmet/docker.env
+
+    volumes:
+      - .:/srv/app
 
     ports:
       - "0.0.0.0:8000:8000"
