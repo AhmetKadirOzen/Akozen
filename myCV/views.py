@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from myCV.models import GeneralSetting, ImageSetting, Skill, Experience, Education
+from django.shortcuts import render, redirect, get_object_or_404
+from myCV.models import GeneralSetting, ImageSetting, Skill, Experience, Education, Document
 
 
 # Create your views here.
@@ -23,13 +23,14 @@ def index(request):
 
     experiences = Experience.objects.all().order_by('-start_date')
     educations = Education.objects.all().order_by('-start_date')
+    documents = Document.objects.all()
 
     context = {
         'site_title': site_title,
         'site_keywords': site_keywords,
         'site_description': site_description,
         'home_banner_name': home_banner_name,
-        'home_banner_title':  home_banner_title,
+        'home_banner_title': home_banner_title,
         'home_banner_description': home_banner_description,
         'about_myself_welcome': about_myself_welcome,
         'header_logo': header_logo,
@@ -38,6 +39,12 @@ def index(request):
         'skills': skills,
         'experiences': experiences,
         'educations': educations,
+        'documents': documents,
     }
 
     return render(request, 'index.html', context=context)
+
+
+def redirect_urls(request, slug):
+    doc = get_object_or_404(Document, slug=slug)
+    return redirect(doc.file.url)
